@@ -5,7 +5,7 @@
 
 
     <application
-        android:label="workbench"
+        android:label="WorkBench"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
