@@ -1,12 +1,14 @@
 // lib/providers/device_info_provider.dart
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../models/device_info_state.dart';
 
-final deviceInfoProvider = StateNotifierProvider<DeviceInfoNotifier, DeviceInfoState>((ref) => DeviceInfoNotifier());
+final StateNotifierProvider<DeviceInfoNotifier, DeviceInfoState> deviceInfoProvider =
+    StateNotifierProvider<DeviceInfoNotifier, DeviceInfoState>((Ref ref) => DeviceInfoNotifier());
 
 class DeviceInfoNotifier extends StateNotifier<DeviceInfoState> {
   DeviceInfoNotifier() : super(const DeviceInfoState(loading: true));
@@ -15,9 +17,9 @@ class DeviceInfoNotifier extends StateNotifier<DeviceInfoState> {
 
   /// PUBLIC API
   Future<void> fetch() async {
-    state = state.copyWith(loading: true, error: null);
+    state = state.copyWith(loading: true);
 
-    final status = await Permission.location.status;
+    final PermissionStatus status = await Permission.location.status;
 
     if (status.isPermanentlyDenied) {
       state = state.copyWith(
@@ -29,7 +31,7 @@ class DeviceInfoNotifier extends StateNotifier<DeviceInfoState> {
     }
 
     if (!status.isGranted) {
-      final req = await Permission.location.request();
+      final PermissionStatus req = await Permission.location.request();
       if (!req.isGranted) {
         state = state.copyWith(loading: false, error: 'Location permission denied.');
         return;
@@ -45,12 +47,7 @@ class DeviceInfoNotifier extends StateNotifier<DeviceInfoState> {
 
       // log(result.toString());
 
-      state = state.copyWith(
-        data: Map<String, dynamic>.from(result),
-        lastRefreshedAt: DateTime.now(),
-        loading: false,
-        error: null,
-      );
+      state = state.copyWith(data: Map<String, dynamic>.from(result), lastRefreshedAt: DateTime.now(), loading: false);
     } catch (e) {
       state = state.copyWith(loading: false, error: e.toString());
     }
