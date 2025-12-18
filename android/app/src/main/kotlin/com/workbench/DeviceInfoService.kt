@@ -91,6 +91,6 @@ object DeviceInfoService {
         data.forEach { (key, value) ->
             Log.d(TAG, "$key : $value")
         }
-        Log.d(TAG, "──────────────────────────────────")
+        Log.d(TAG, "───────────────────────────────────")
     }
 }
