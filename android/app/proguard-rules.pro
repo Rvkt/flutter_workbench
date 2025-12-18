@@ -19,7 +19,7 @@
 -keep class com.workbench.MainActivity { *; }
 
 # DeviceStateProvider (MethodChannel target)
--keep class com.workbench.DeviceStateProvider { *; }
+-keep class com.workbench.DeviceInfoService { *; }
 
 
 # Kotlin metadata (required for Kotlin reflection)

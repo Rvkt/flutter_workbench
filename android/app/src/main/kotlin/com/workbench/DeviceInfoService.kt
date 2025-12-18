@@ -8,9 +8,9 @@ import android.provider.Settings
 import android.util.Log
 import com.google.android.gms.location.LocationServices
 
-object DeviceStateProvider {
+object DeviceInfoService {
 
-    private const val TAG = "DeviceStateProvider"
+    private const val TAG = "DeviceInfoService"
 
     /**
      * Fetch device + app + location info

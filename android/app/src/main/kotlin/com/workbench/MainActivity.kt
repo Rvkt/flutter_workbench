@@ -18,7 +18,7 @@ class MainActivity : FlutterActivity() {
         ).setMethodCallHandler { call, result ->
             when (call.method) {
                 "getDeviceAndAppInfo" -> {
-                    DeviceStateProvider.getDeviceAndAppInfo(this) { data ->
+                    DeviceInfoService.getDeviceAndAppInfo(this) { data ->
                         result.success(data)
                     }
                 }
