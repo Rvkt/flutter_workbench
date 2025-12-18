@@ -1,4 +1,3 @@
-
 class DeviceInfoState {
   final Map<String, dynamic>? data;
   final bool loading;

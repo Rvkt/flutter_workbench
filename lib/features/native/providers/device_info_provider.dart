@@ -1,6 +1,4 @@
 // lib/providers/device_info_provider.dart
-import 'dart:developer';
-
 import 'package:flutter/services.dart';
 
 import 'package:flutter_riverpod/legacy.dart';
@@ -8,17 +6,12 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../models/device_info_state.dart';
 
-
-final deviceInfoProvider =
-    StateNotifierProvider<DeviceInfoNotifier, DeviceInfoState>(
-  (ref) => DeviceInfoNotifier(),
-);
+final deviceInfoProvider = StateNotifierProvider<DeviceInfoNotifier, DeviceInfoState>((ref) => DeviceInfoNotifier());
 
 class DeviceInfoNotifier extends StateNotifier<DeviceInfoState> {
   DeviceInfoNotifier() : super(const DeviceInfoState(loading: true));
 
-  static const MethodChannel _channel =
-      MethodChannel('device_info_channel');
+  static const MethodChannel _channel = MethodChannel('device_info_channel');
 
   /// PUBLIC API
   Future<void> fetch() async {
@@ -29,8 +22,7 @@ class DeviceInfoNotifier extends StateNotifier<DeviceInfoState> {
     if (status.isPermanentlyDenied) {
       state = state.copyWith(
         loading: false,
-        error:
-            'Location permission permanently denied.\nEnable it from settings.',
+        error: 'Location permission permanently denied.\nEnable it from settings.',
       );
       await openAppSettings();
       return;
@@ -39,10 +31,7 @@ class DeviceInfoNotifier extends StateNotifier<DeviceInfoState> {
     if (!status.isGranted) {
       final req = await Permission.location.request();
       if (!req.isGranted) {
-        state = state.copyWith(
-          loading: false,
-          error: 'Location permission denied.',
-        );
+        state = state.copyWith(loading: false, error: 'Location permission denied.');
         return;
       }
     }
@@ -52,10 +41,9 @@ class DeviceInfoNotifier extends StateNotifier<DeviceInfoState> {
 
   Future<void> _fetchNativeInfo() async {
     try {
-      final Map<dynamic, dynamic> result =
-          await _channel.invokeMethod('getDeviceAndAppInfo');
+      final Map<dynamic, dynamic> result = await _channel.invokeMethod('getDeviceAndAppInfo');
 
-          // log(result.toString());
+      // log(result.toString());
 
       state = state.copyWith(
         data: Map<String, dynamic>.from(result),
@@ -64,10 +52,7 @@ class DeviceInfoNotifier extends StateNotifier<DeviceInfoState> {
         error: null,
       );
     } catch (e) {
-      state = state.copyWith(
-        loading: false,
-        error: e.toString(),
-      );
+      state = state.copyWith(loading: false, error: e.toString());
     }
   }
 }
