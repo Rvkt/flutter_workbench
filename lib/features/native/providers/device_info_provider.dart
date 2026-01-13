@@ -39,15 +39,34 @@ class DeviceInfoNotifier extends StateNotifier<DeviceInfoState> {
     }
 
     await _fetchNativeInfo();
+    await _fetchSimInfo();
   }
 
   Future<void> _fetchNativeInfo() async {
     try {
       final Map<dynamic, dynamic> result = await _channel.invokeMethod('getDeviceAndAppInfo');
 
-      // log(result.toString());
+      final Map<String, dynamic> merged = <String, dynamic>{
+        ...(state.data ?? <String, dynamic>{}),
+        ...Map<String, dynamic>.from(result),
+      };
 
-      state = state.copyWith(data: Map<String, dynamic>.from(result), lastRefreshedAt: DateTime.now(), loading: false);
+      state = state.copyWith(data: merged, lastRefreshedAt: DateTime.now(), loading: false);
+    } catch (e) {
+      state = state.copyWith(loading: false, error: e.toString());
+    }
+  }
+
+  Future<void> _fetchSimInfo() async {
+    try {
+      final Map<dynamic, dynamic> result = await _channel.invokeMethod('getSimInfo');
+
+      final Map<String, dynamic> merged = <String, dynamic>{
+        ...(state.data ?? <String, dynamic>{}),
+        ...Map<String, dynamic>.from(result),
+      };
+
+      state = state.copyWith(data: merged, lastRefreshedAt: DateTime.now(), loading: false);
     } catch (e) {
       state = state.copyWith(loading: false, error: e.toString());
     }

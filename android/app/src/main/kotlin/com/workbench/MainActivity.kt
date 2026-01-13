@@ -22,8 +22,14 @@ class MainActivity : FlutterActivity() {
                         result.success(data)
                     }
                 }
+                "getSimInfo" -> {
+                    SimEnvironmentService.getSimEnvironmentInfo(this) { data ->
+                        result.success(data)
+                    }
+                }
                 else -> result.notImplemented()
             }
         }
     }
 }
+
