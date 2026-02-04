@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'features/native/screens/native_device_info.dart';
+
+import 'features/native/screens/device_info_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Workbench',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.black), useMaterial3: true),
-      home: const NativeDeviceInfoScreen(title: 'Native Device & App Info'),
+      home: const NativeDeviceInfoTableScreen(title: 'Native Device & App Info'),
     );
   }
 }
